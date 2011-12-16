@@ -127,7 +127,7 @@ class Collection {
         'label' => $doc->{'fgs.label'},
         'link' => base_path() . 'fedora/repository/' . $doc->PID,
         'tn' => $image_path . '/object.png',
-        'description' => $doc->{'dc.description'}[0]
+        'description' => !empty($doc->{'dc.description'}[0]) ? $doc->{'dc.description'}[0] : 'Default Description, Check this object\'s metadata and ensure a description is present.'
       );
     }
     return array($output, $results->response->numFound);
