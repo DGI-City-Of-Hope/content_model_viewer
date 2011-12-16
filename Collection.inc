@@ -38,7 +38,7 @@ class Collection {
     $sort[0]->direction = 'ASC';
     $filter = array(new stdClass());
     $filter[0]->property = 'label';
-    $filter[0]->value = '*';
+    $filter[0]->value = '';
     $this->default = array(
       'sort' => $sort,
       'filter' => $filter
@@ -55,11 +55,9 @@ class Collection {
     $filter = isset($_REQUEST['filter']) ? json_decode($_REQUEST['filter']) : $this->default['filter'];
     $sort = isset($_REQUEST['sort']) ? json_decode($_REQUEST['sort']) : $this->default['sort'];
     $search = trim($filter[0]->value);
-    $search = empty($search) ? '*' : $search;
     $order = strtolower($sort[0]->direction);
     $sort = $sort[0]->property;
-    $foo = $this->searchSolr($search, $sort, $order, $offset, $limit);
-    return $foo;
+    return $this->searchSolr($search, $sort, $order, $offset, $limit);
     /* $results = $this->findMembers('all');
       $results = $this->filter($results, $filter);
       $results = $this->sort($results, $sort);
@@ -87,8 +85,23 @@ class Collection {
     }
   }
 
-  ///
-  public function searchSolr($search, $sort, $order, $offset, $limit) {
+  /**
+   * Allows the user to search solr much faster than searching and processing from RI.
+   * 
+   * @param string $search
+   * @param string $sort
+   *   Either 'label' or 'created' expected.
+   * @param string $order
+   *   Either 'asc' or 'desc' expected.
+   * @param int $offset
+   *   The offset in the search results to return.
+   * @param int $limit
+   *   The number of search results to return.
+   * 
+   * @return array
+   *   Where the first index is a number and the second is the total number of results.
+   */
+  public function searchSolr($search, $sort, $order, $offset = 0, $limit = 10) {
     module_load_include('php', 'islandora_solr_search', 'SolrPhpClient/Apache/Solr/Service');
     $module_path = base_path() . drupal_get_path('module', 'content_model_viewer');
     $image_path = $module_path . '/images';
@@ -96,9 +109,12 @@ class Collection {
     $solr = new Apache_Solr_Service($path['host'], $path['port'], $path['path']);
     $solr->setCreateDocuments(FALSE);
     $sort = ($sort == 'label') ? 'fgs.labelSort' : 'fgs.createdDate';
-    $query = 'fgs.label:(' . htmlentities(trim($search)) . ')';
+    $search = empty($search) ? '*' : $solr->escape($search);
+    $query = $search;
     $results = $solr->search($query, $offset, $limit, array(
-      'fq' => implode(',', array(
+      'q.op' => 'AND',
+      'df' => 'fgs.label',
+      'fq' => implode(' OR ', array(
         "rels.isMemberOfCollection:\"info:fedora/{$this->pid}\"",
         "rels.isMemberOf:\"info:fedora/{$this->pid}\"")
       ),
@@ -114,8 +130,7 @@ class Collection {
         'description' => $this->getDescription($doc->PID)
       );
     }
-    $count = count($output);
-    return array($output, $count);
+    return array($output, $results->response->numFound);
   }
 
   /**
