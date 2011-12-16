@@ -127,7 +127,7 @@ class Collection {
         'label' => $doc->{'fgs.label'},
         'link' => base_path() . 'fedora/repository/' . $doc->PID,
         'tn' => $image_path . '/object.png',
-        'description' => $this->getDescription($doc->PID)
+        'description' => $doc->{'dc.description'}[0]
       );
     }
     return array($output, $results->response->numFound);
