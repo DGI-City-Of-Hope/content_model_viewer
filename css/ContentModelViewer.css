@@ -18,6 +18,12 @@
   margin-right: auto;
 }
 
+#back-link {
+  padding-top: 0.5em;
+  padding-bottom: 2em;
+  display: block;
+}
+
 .add-datastream-icon {
   background-image:url(../images/icon/add.png);
 }

@@ -38,7 +38,7 @@ class Collection {
     $sort[0]->direction = 'ASC';
     $filter = array(new stdClass());
     $filter[0]->property = 'label';
-    $filter[0]->value = NULL;
+    $filter[0]->value = '*';
     $this->default = array(
       'sort' => $sort,
       'filter' => $filter
@@ -50,17 +50,22 @@ class Collection {
    * @return array
    */
   public function getMembers() {
-
     $offset = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
     $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
     $filter = isset($_REQUEST['filter']) ? json_decode($_REQUEST['filter']) : $this->default['filter'];
     $sort = isset($_REQUEST['sort']) ? json_decode($_REQUEST['sort']) : $this->default['sort'];
-    $results = $this->findMembers('all');
-    $results = $this->filter($results, $filter);
-    $results = $this->sort($results, $sort);
-    list($results, $count) = $this->limit($results, $offset, $limit);
-    $results = $this->populate($results);
-    return array($results, $count);
+    $search = trim($filter[0]->value);
+    $search = empty($search) ? '*' : $search;
+    $order = strtolower($sort[0]->direction);
+    $sort = $sort[0]->property;
+    $foo = $this->searchSolr($search, $sort, $order, $offset, $limit);
+    return $foo;
+    /* $results = $this->findMembers('all');
+      $results = $this->filter($results, $filter);
+      $results = $this->sort($results, $sort);
+      list($results, $count) = $this->limit($results, $offset, $limit);
+      $results = $this->populate($results);
+      return array($results, $count); */
   }
 
   /**
@@ -80,6 +85,37 @@ class Collection {
       default:
         return $this->findAllMembers();
     }
+  }
+
+  ///
+  public function searchSolr($search, $sort, $order, $offset, $limit) {
+    module_load_include('php', 'islandora_solr_search', 'SolrPhpClient/Apache/Solr/Service');
+    $module_path = base_path() . drupal_get_path('module', 'content_model_viewer');
+    $image_path = $module_path . '/images';
+    $path = parse_url(variable_get('islandora_solr_search_block_url', 'http://localhost:8080/solr/'));
+    $solr = new Apache_Solr_Service($path['host'], $path['port'], $path['path']);
+    $solr->setCreateDocuments(FALSE);
+    $sort = ($sort == 'label') ? 'fgs.labelSort' : 'fgs.createdDate';
+    $query = 'fgs.label:(' . htmlentities(trim($search)) . ')';
+    $results = $solr->search($query, $offset, $limit, array(
+      'fq' => implode(',', array(
+        "rels.isMemberOfCollection:\"info:fedora/{$this->pid}\"",
+        "rels.isMemberOf:\"info:fedora/{$this->pid}\"")
+      ),
+      'sort' => "$sort $order")
+    );
+    $output = array();
+    foreach ($results->response->docs as &$doc) {
+      $output[] = array(
+        'pid' => $doc->PID,
+        'label' => $doc->{'fgs.label'},
+        'link' => base_path() . 'fedora/repository/' . $doc->PID,
+        'tn' => $image_path . '/object.png',
+        'description' => $this->getDescription($doc->PID)
+      );
+    }
+    $count = count($output);
+    return array($output, $count);
   }
 
   /**
