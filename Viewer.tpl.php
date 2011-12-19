@@ -1,6 +1,9 @@
 <div id="content-model-viewer">
   <h1><?php print $label; ?></h1>
   <br/>
+  <input type="button" value="<?php print t('Return to Previous Page'); ?>" onclick="history.go(-1)">
+  <br/>
+  <br/>
   <div style="display:none" id="properties">
     <div id="pid"><?php print $pid; ?></div>
     <div id="dsid"><?php print $dsid; ?></div>
