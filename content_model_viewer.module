@@ -155,7 +155,7 @@ function content_model_viewer_theme() {
   return array(
     'content_model_viewer' => array(
       'arguments' => array('pid' => NULL),
-      'template' => 'viewer',
+      'template' => 'Viewer',
     ),
     'content_model_viewer_metadata_form' => array(
       'arguments' => array('pid' => NULL, 'action' => NULL),
