@@ -23,12 +23,12 @@
     <div id="datastream_properties_url"><?php print check_url(url($paths['datastream']['properties'])); ?></div>
   </div>
   <div style="display:none" id="datastream-download">
-    <form id="datastream-download-form" method="GET" action="">
+    <form id="datastream-download-form" method="GET">
       <input type="submit">Download</input>
     </form>
   </div>
   <div style="display:none" id="datastream-edit">
-    <form id="datastream-edit-form" method="POST" action="edit">
+    <form id="datastream-edit-form" method="POST">
       <input type="hidden" name="dsid"/>
       <input type="hidden" name="action"/>
       <input type="submit">Download</input>

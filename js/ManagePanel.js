@@ -381,9 +381,6 @@ Ext.onReady(function(){
             if(selectionModel.hasSelection()) {
               var record = selectionModel.selected.first();
               var form = Ext.get("datastream-edit-form");
-              form.set({
-                action: window.location // Same Spot.
-              });
               var dsid = form.down('input[name="dsid"]');
               dsid.set({
                 value: record.get('dsid')
