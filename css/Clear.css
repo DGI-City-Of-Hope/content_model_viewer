@@ -24,6 +24,14 @@
     border: 0;
 }
 
+#content-model-viewer tr, #content-model-viewer td, div.x-window td, div.x-window tr {
+  padding: 0em\9; /*hack for ie*/
+}
+
+#content-model-viewer tbody, div.x-window tbody{
+  border: 0em\9; /*hack for ie*/
+}
+  
 .x-boundlist-item {
   background: none;
 }
