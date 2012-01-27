@@ -5,8 +5,8 @@ $(document).ready(function() {
     var content = form.remove();
     parent.empty();
     parent.append(content);
+    $('.ahah-processed').removeClass('ahah-processed');
   }
-  $('.ahah-processed').removeClass('ahah-processed');
   Drupal.attachBehaviors();
 });
 

@@ -385,10 +385,6 @@ Ext.onReady(function(){
               dsid.set({
                 value: record.get('dsid')
                 });
-              var action = form.down('input[name="action"]');
-              action.set({
-                value: 'edit'
-              });
               document.forms["datastream-edit-form"].submit();              
             }
           }
