@@ -195,7 +195,7 @@ Ext.onReady(function(){
             record.get('view') ? button.enable() : button.disable();
             button = Ext.getCmp('download-datastream');
             record.get('download') ? button.enable() : button.disable();
-            // Load some info into the preview panel.
+          // Load some info into the preview panel.
           }
         }      
       },
@@ -384,7 +384,11 @@ Ext.onReady(function(){
               var dsid = form.down('input[name="dsid"]');
               dsid.set({
                 value: record.get('dsid')
-                });
+              });
+              var action = form.down('input[name="show_form"]');
+              action.set({
+                value: 'edit'
+              });
               document.forms["datastream-edit-form"].submit();              
             }
           }

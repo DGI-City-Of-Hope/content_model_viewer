@@ -85,9 +85,9 @@ Ext.onReady(function(){
         handler: function(button, event) {
           var form = Ext.get("datastream-edit-form");
           form.set({
-            action: window.location // Same Spot.
+            action: window.location.pathname // Same Spot.
           });
-          var action = form.down('input[name="action"]');
+          var action = form.down('input[name="show_form"]');
           action.set({
             value: 'ingest'
           });

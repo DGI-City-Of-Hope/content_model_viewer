@@ -28,9 +28,9 @@
     </form>
   </div>
   <div style="display:none" id="datastream-edit">
-    <form id="datastream-edit-form" method="POST">
+    <form id="datastream-edit-form" action="" method="POST">
       <input type="hidden" name="dsid"/>
-      <input type="hidden" name="show_form" value="edit"/>
+      <input type="hidden" name="show_form"/>
       <input type="submit">Download</input>
     </form>
   </div>
