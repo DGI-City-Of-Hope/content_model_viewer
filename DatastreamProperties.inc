@@ -506,7 +506,7 @@ class DatastreamProperties {
    *   A URL to the image, or FALSE if none was found.
    */
   private function getThumbnailFromRELSINT($dsid) {
-    if ($this->item->datastreams['RELS-INT']) {
+    if (isset($this->item->datastreams['RELS-INT'])) {
       $rels_int = $this->item->get_datastream_dissemination("RELS-INT");
       if (trim($rels_int) != '') {
         $rels_int = new SimpleXMLElement($rels_int);

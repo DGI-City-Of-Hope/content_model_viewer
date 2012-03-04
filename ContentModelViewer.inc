@@ -40,7 +40,7 @@ abstract class ContentModelViewer {
    * 
    * @return string
    */
-  public function getOverview();
+  abstract public function getOverview();
 
   /**
    * Gets the required datastream information for viewer.
@@ -50,5 +50,5 @@ abstract class ContentModelViewer {
    * 
    * @return array
    */
-  public function getDatastreams();
+  abstract public function getDatastreams();
 }
