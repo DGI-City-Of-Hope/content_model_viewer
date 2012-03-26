@@ -110,6 +110,7 @@ Ext.onReady(function(){
     items: [{
       xtype: 'dataview',
       store: Ext.data.StoreManager.lookup('members'),
+      frame: false,
       itemSelector: 'div.file-item',
       emptyText: 'No Files Available',
       deferEmptyText: false,
@@ -117,12 +118,9 @@ Ext.onReady(function(){
         '<tpl for=".">',
         '   <div class="member-item">',
         '       <a href="{link}">',
-        '           <img class="member-item-img" src="{tn}"></img>',
-        '       </a>',
-        '       <a href="{link}">',
         '       <h2 class="member-item-label">{label}</h2>',
-        '       </a><br/>',
-        '       <div class="member-item-description">{[fm.ellipsis(values.description, 400, true)]}</div>',
+        '       </a>',
+        '       <div class="member-item-description">{[fm.ellipsis(values.description, 250, true)]}</div>',
         '   </div>',
         '</tpl>',
         {

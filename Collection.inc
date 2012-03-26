@@ -122,12 +122,14 @@ class Collection {
     );
     $output = array();
     foreach ($results->response->docs as &$doc) {
+      $description = !empty($doc->{'dc.description'}) ? $doc->{'dc.description'} : ''; //'Default Description, Check this object\'s metadata and ensure a description is present.';
+      $description = is_array($description) ? $description[0] : $description;
       $output[] = array(
         'pid' => $doc->PID,
         'label' => $doc->{'fgs.label'},
         'link' => base_path() . 'fedora/repository/' . $doc->PID,
         'tn' => $image_path . '/object.png',
-        'description' => !empty($doc->{'dc.description'}[0]) ? $doc->{'dc.description'}[0] : 'Default Description, Check this object\'s metadata and ensure a description is present.'
+        'description' => $description
       );
     }
     return array($output, $results->response->numFound);

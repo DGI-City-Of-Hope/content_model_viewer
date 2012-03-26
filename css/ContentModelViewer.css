@@ -71,11 +71,8 @@
 }
 
 .member-item {
-  padding-top: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin-top: 15px;
-  height: 112px;
+  padding: 0.25em 2em 0.25em 2em;
+  height: 75px;
 }
 
 .x-dataview-item > .member-item {
@@ -91,12 +88,13 @@
 .member-item-label { 
   white-space: nowrap; 
   text-overflow: ellipsis; 
-  overflow: hidden; 
+  overflow: hidden;
+  margin-bottom: 0.25em;
 }
 
 .member-item-description {
   overflow: hidden;
-  max-height: 55px;
+  max-height: 36px;
 }
 
 .member-item-img {

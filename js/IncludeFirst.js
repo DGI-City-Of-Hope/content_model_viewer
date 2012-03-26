@@ -182,7 +182,7 @@ Ext.onReady(function(){
     model: ContentModelViewer.models.FedoraObject,
     autoLoad: true,
     autoSync: true,
-    pageSize: 5,
+    pageSize: 20,
     remoteSort: true,
     remoteFilter: true,
     sorters: [{
