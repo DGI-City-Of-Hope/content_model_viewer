@@ -33,7 +33,7 @@ Ext.onReady(function(){
         }
       },
       region: 'center'
-    }, {
+    }/*, {
       xtype: 'panel',
       title: 'Files',
       width: 260,
@@ -136,6 +136,6 @@ Ext.onReady(function(){
           } 
         }    
       }]
-    }]
+    }*/]
   });
 });

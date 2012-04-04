@@ -109,8 +109,36 @@ Ext.onReady(function(){
             cls: 'x-btn-text-icon',
             iconCls: 'remove-datastream-icon',
             id: 'purge-object',
-            handler: function() {
-              Ext.Msg.alert('Action Restricted', 'This action is currently restricted');
+            handler: function(button) {
+              Ext.Msg.show({
+                title:'Purge Object?',
+                msg: 'Are you sure you want to purge this object? This action cannot be undone.',
+                buttons: Ext.Msg.YESNO,
+                fn: function(choice) {
+                  if(choice == 'yes') {
+                    button.up('form').getForm().submit({
+                      url: ContentModelViewer.properties.url.object.purge,
+                      waitMsg: 'Purging...',
+                      success: function(form, action) {
+                        history.go(-1);
+                      },
+                      failure: function(form, action) {
+                        switch (action.failureType) {
+                          case Ext.form.action.Action.CLIENT_INVALID:
+                            Ext.Msg.alert('Failure', 'Form fields may not be submitted with invalid values');
+                            break;
+                          case Ext.form.action.Action.CONNECT_FAILURE:
+                            Ext.Msg.alert('Failure', 'Ajax communication failed');
+                            break;
+                          case Ext.form.action.Action.SERVER_INVALID:
+                            Ext.Msg.alert('Failure', action.result.msg);
+                        }
+                      }
+                    });
+                  }
+                },
+                icon: Ext.window.MessageBox.QUESTION
+              });
             }
           }]
         }],
