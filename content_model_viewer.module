@@ -648,13 +648,15 @@ function content_model_viewer_purge_object($pid) {
   }
   $success = $item->purge();
   $message = $success ? t('Successfuly deleted object %l', array('%l' => $label)) : t('Failed to delete object %1', array('%l' => $label));
+  drupal_set_message($message);
   if (isset($_POST['dsm']) && $_POST['dsm'] == 'true') {
     drupal_set_message($message);
+    drupal_goto($collection);
   }
   else {
-    echo json_encode(array('success' => $success, 'msg' => $message));
+    echo json_encode(array('success' => $success, 'msg' => $message, 'l' => url($collection)));
+    exit();
   }
-  $success ? drupal_goto($collection) : exit();
 }
 
 /**

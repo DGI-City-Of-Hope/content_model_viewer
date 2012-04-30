@@ -120,8 +120,8 @@ Ext.onReady(function(){
                       url: ContentModelViewer.properties.url.object.purge,
                       waitMsg: 'Purging...',
                       success: function(form, action) {
-                        history.go(-1);
-                      },
+                        window.location = action.result.l;
+                      },  
                       failure: function(form, action) {
                         switch (action.failureType) {
                           case Ext.form.action.Action.CLIENT_INVALID:
@@ -417,7 +417,7 @@ Ext.onReady(function(){
               action.set({
                 value: 'edit'
               });
-              document.forms["datastream-edit-form"].submit();              
+              document.forms["datastream-edit-form"].submit();
             }
           }
         },  {
